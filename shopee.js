@@ -1,5 +1,5 @@
 const fs = require("fs")
-const { send, timestamp } = require("./telegraf")
+const { send, sendOyen, timestamp } = require("./telegraf")
 
 const file = "./accounts.json"
 
@@ -61,7 +61,7 @@ const water = (name, cookie) => {
       status[name].panen++
     } else {
       status[name].tetes = 0
-      send(`🐱 Oyennn yang baik hati memberkati tanaman ${name}!\n\n${timestamp()}, process ${counter}x`)
+      sendOyen(`🐱 Oyennn yang baik hati memberkati tanaman ${name}!\n\n${timestamp()}, process ${counter}x`)
     }
   })
   .catch(() => console.log(`Failed to siram (${name}), connection error!`))

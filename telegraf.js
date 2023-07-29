@@ -30,4 +30,9 @@ const send = (message) => {
   catch { console.log("Failed to send message !") }
 }
 
-module.exports = { account, timestamp, oyen, send, config }
+const sendOyen = (message) => {
+  try { oyen.telegram.sendMessage(process.env.GROUP_OYEN, message) }
+  catch { console.log("Failed to send message !") }
+}
+
+module.exports = { account, timestamp, oyen, send, sendOyen, config }
