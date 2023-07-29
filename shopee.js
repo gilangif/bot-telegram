@@ -20,8 +20,8 @@ const checkShopee = (cmd) => {
   let msg = `# Process ${counter}, ${timestamp()}\n\n`
   
   data.forEach((item) => {
-    const { name, username, userid, SPCU, SPCC } = item
-    if (!status[name]) status[name] = { tetes: 0, username, userid, SPCU, SPCC, panen: 0 }
+    const { name, username, userid, SPCU, SPCC, telegramUsername } = item
+    if (!status[name]) status[name] = { tetes: 0, username, userid, SPCU, SPCC, telegramUsername, panen: 0 }
     connect(name, username, userid, SPCU, SPCC)
   });
 
@@ -40,15 +40,15 @@ const checkShopee = (cmd) => {
     total += status[x].tetes
 
     if (status[x].tetes >= process.env.SHOPEE_MAX_TETES) {
-      water(x, cookie)
+      water(x, cookie, status[x].telegramUsername)
     }
   }
 
-  cmd === "status" ? send(`${msg}\n(total ${total} tetes) from ${data.length} account`) : console.log(msg, "\n(total ", total, "tetes) from ", data.length, "account\n\n")
+  cmd === "status" ? sendOyen(`${msg}\n(total ${total} tetes) from ${data.length} account`) : console.log(msg, "\n(total ", total, "tetes) from ", data.length, "account\n\n")
   counter++
 }
 
-const water = (name, cookie) => {
+const water = (name, cookie, mention) => {
   fetch('https://games.shopee.co.id/farm/api/orchard/crop/water', { method: 'POST', headers: { 'Cookie': `${cookie}`} })
   .then((res) => res.json())
   .then((res) => {
@@ -56,7 +56,7 @@ const water = (name, cookie) => {
       if (status[name].panen < 1) {
         send(`🐱 Sepertinya ${name} panen!\n\n${timestamp()}, process ${counter}x`)
       } else if (status[name].panen === 2) {
-        send(`🐱 Oiiii ${name} cek taneman cepetan!\n\n${timestamp()}, process ${counter}x`)
+        send(`🐱 Oiiii ${mention} cek taneman cepetan!\n\n${timestamp()}, process ${counter}x`)
       }
       status[name].panen++
     } else {
